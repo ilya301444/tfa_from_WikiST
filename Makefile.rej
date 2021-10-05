@@ -1,0 +1,55 @@
+--- Makefile
++++ Makefile
+@@ -1,5 +1,5 @@
+ #
+-# Copyright (c) 2013-2020, ARM Limited and Contributors. All rights reserved.
++# Copyright (c) 2013-2021, ARM Limited and Contributors. All rights reserved.
+ #
+ # SPDX-License-Identifier: BSD-3-Clause
+ #
+@@ -548,11 +548,9 @@ endif
+ endif
+ 	BL31_CFLAGS	+=	-fpie
+ 	BL31_LDFLAGS	+=	$(PIE_LDFLAGS)
+-ifeq ($(ARCH),aarch64)
+ 	BL32_CFLAGS	+=	-fpie
+ 	BL32_LDFLAGS	+=	$(PIE_LDFLAGS)
+ endif
+-endif
+ 
+ ifeq (${ARCH},aarch64)
+ BL1_CPPFLAGS += -DIMAGE_AT_EL3
+@@ -918,6 +916,7 @@ $(eval $(call assert_booleans,\
+         RAS_TRAP_LOWER_EL_ERR_ACCESS \
+         COT_DESC_IN_DTB \
+         USE_SP804_TIMER \
++        AARCH32_EXCEPTION_DEBUG \
+ )))
+ 
+ $(eval $(call assert_numerics,\
+@@ -1007,6 +1006,7 @@ $(eval $(call add_defines,\
+         RAS_TRAP_LOWER_EL_ERR_ACCESS \
+         COT_DESC_IN_DTB \
+         USE_SP804_TIMER \
++        AARCH32_EXCEPTION_DEBUG \
+ )))
+ 
+ ifeq (${SANITIZE_UB},trap)
+@@ -1224,7 +1224,7 @@ certtool: ${CRTTOOL}
+ 
+ .PHONY: ${CRTTOOL}
+ ${CRTTOOL}:
+-	${Q}${MAKE} PLAT=${PLAT} USE_TBBR_DEFS=${USE_TBBR_DEFS} COT=${COT} OPENSSL_DIR=${OPENSSL_DIR} CRTTOOL=${CRTTOOL} --no-print-directory -C ${CRTTOOLPATH}
++	${Q}${MAKE} PLAT=${PLAT} USE_TBBR_DEFS=${USE_TBBR_DEFS} COT=${COT} CRTTOOL=${CRTTOOL} --no-print-directory -C ${CRTTOOLPATH}
+ 	@${ECHO_BLANK_LINE}
+ 	@echo "Built $@ successfully"
+ 	@${ECHO_BLANK_LINE}
+@@ -1299,7 +1299,7 @@ enctool: ${ENCTOOL}
+ 
+ .PHONY: ${ENCTOOL}
+ ${ENCTOOL}:
+-	${Q}${MAKE} PLAT=${PLAT} BUILD_INFO=0 OPENSSL_DIR=${OPENSSL_DIR} ENCTOOL=${ENCTOOL} --no-print-directory -C ${ENCTOOLPATH}
++	${Q}${MAKE} PLAT=${PLAT} BUILD_INFO=0 ENCTOOL=${ENCTOOL} --no-print-directory -C ${ENCTOOLPATH}
+ 	@${ECHO_BLANK_LINE}
+ 	@echo "Built $@ successfully"
+ 	@${ECHO_BLANK_LINE}
